@@ -25,36 +25,35 @@ class SanmaDataController extends AppController {
             // Insert search condition to this array 
             $cond_array = array(); 
             
+            $data = $this->request->data['SanmaData'];
             
-            
-            $ymd = $this->request->data['SanmaData']['ymd'];
+            $ymd = $data['ymd'];
             $this->set('ymd', $ymd);
 
-            $company = $this->request->data['SanmaData']['company'];
+            $company = $data['company'];
             $this->set('company', $company);
             if($company!="")
                 $cond_array += array('SanmaData.company'=>$company);
 
-            $person_c = $this->request->data['SanmaData']['person_c'];
+            $person_c = $data['person_c'];
             $this->set('person_c', $person_c);
             if($person_c!="")
                 $cond_array += array('SanmaData.person_c'=>$person_c);
 
-            $contact = $this->request->data['SanmaData']['contact'];
+            $contact = $data['contact'];
             $this->set('contact', $contact);
             if($contact!="")
                 $cond_array += array('SanmaData.contact'=>$contact);
 
-            $person_m = $this->request->data['SanmaData']['person_m'];
+            $person_m = $data['person_m'];
             $this->set('person_m', $person_m);
             if($person_m!="")
                 $cond_array += array('SanmaData.person_m'=>$person_m);
 
-            $memo = $this->request->data['SanmaData']['memo'];
+            $memo = $data['memo'];
             $this->set('memo', $memo);
             if($memo!="")
                 $cond_array += array('SanmaData.memo LIKE'=>'%'.$memo.'%');
-            
 
             $status = array('conditions'=>array("AND"=>$cond_array));
             $datas = $this->SanmaData->find('all', $status);
