@@ -16,38 +16,47 @@ class SanmaDataController extends AppController {
     }
 
     public function search() {
-        if($this->request->data) {
-            $this->set("company", $this->request->data['SanmaData']['company']);
-            $this->set("person_c", $this->request->data['SanmaData']['person_c']);
-            $this->set("contact", $this->request->data['SanmaData']['contact']);
-            $this->set("person_m", $this->request->data['SanmaData']['person_m']);
-        } else {
-            $this->set("company", "no");
-            $this->set("person_c", "no");
-            $this->set("contact", "no");
-            $this->set("person_m", "no");
-        }
-        /*
-        if($this->request->is('post')) {
-            $date = Sanitize::stripAll($this->request->data["SanmaData"]['date']);
-            $company = Sanitize::stripAll($this->request->data['SanmaData']['company']);
-            $person_c = Sanitize::stripAll($this->request->data['SanmaData']['person_c']);
-            $contact = Sanitize::stripAll($this->request->data['SanmaData']['contact']);
-            $person_m = Sanitize::stripAll($this->request->data['SanmaData']['person_m']);
-            $this->redirect("./table/".$company."/".$person_c."/".$contact."/".$person_m);
-        } else {
-            $result = "no data.";
-        }
-        $this->set("result", $result);
-        */
     }
 
     public function table() {
+        $this->autoLayout = false;
         if($this->request->data) {
+            
+            // Insert search condition to this array 
+            $cond_array = array(); 
+            
+            
+            
+            $ymd = $this->request->data['SanmaData']['ymd'];
+            $this->set('ymd', $ymd);
+
             $company = $this->request->data['SanmaData']['company'];
             $this->set('company', $company);
-            $status = array(
-                'conditions'=>array('SanmaData.company'=>$company));
+            if($company!="")
+                $cond_array += array('SanmaData.company'=>$company);
+
+            $person_c = $this->request->data['SanmaData']['person_c'];
+            $this->set('person_c', $person_c);
+            if($person_c!="")
+                $cond_array += array('SanmaData.person_c'=>$person_c);
+
+            $contact = $this->request->data['SanmaData']['contact'];
+            $this->set('contact', $contact);
+            if($contact!="")
+                $cond_array += array('SanmaData.contact'=>$contact);
+
+            $person_m = $this->request->data['SanmaData']['person_m'];
+            $this->set('person_m', $person_m);
+            if($person_m!="")
+                $cond_array += array('SanmaData.person_m'=>$person_m);
+
+            $memo = $this->request->data['SanmaData']['memo'];
+            $this->set('memo', $memo);
+            if($memo!="")
+                $cond_array += array('SanmaData.memo LIKE'=>'%'.$memo.'%');
+            
+
+            $status = array('conditions'=>array("AND"=>$cond_array));
             $datas = $this->SanmaData->find('all', $status);
             $this->set('datas',$datas);
         } else {
