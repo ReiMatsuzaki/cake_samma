@@ -1,14 +1,16 @@
 <h1>Add Datas</h1>
 <p>Sanma!</p>
 <p>company: <?php echo $company; ?></p>
-<p>memo: <?php echo $memo; ?></p>
+<p>memo: <?php print_r($memo); ?></p>
+<p>contact: <?php print_r($contact); ?></p>
+<p>date0: <?php print_r($date0); ?></p>
+<p>date1: <?php print_r($date1); ?></p>
 <p></p>
 
 <table>
 <?php if (isset($datas)): ?>
 <?php foreach ($datas as $data): ?>
 <tr>
-<td><?php echo $data['SanmaData']['ymd'] ?></td>
 <td><?php echo $data['SanmaData']['date'] ?></td>
 <td><?php echo $data['SanmaData']['company'] ?></td>
 <td><?php echo $data['SanmaData']['person_c'] ?></td>

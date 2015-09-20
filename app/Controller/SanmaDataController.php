@@ -16,6 +16,13 @@ class SanmaDataController extends AppController {
     }
 
     public function search() {
+        $ymd_opts = array(
+            'type'=>'date',
+            'dateFormat'=>'YMD',
+            'monthNames'=>false,
+            'empty'=>array(0=>'-'),
+            'selected'=>array('year'=>0, 'month'=>0, 'day'=>0));
+        $this->set('ymd_opts', $ymd_opts);
     }
 
     public function table() {
@@ -25,10 +32,19 @@ class SanmaDataController extends AppController {
             // Insert search condition to this array 
             $cond_array = array(); 
             
-            $data = $this->request->data['SanmaData'];
+            $data = $this->request->data;
             
-            $ymd = $data['ymd'];
-            $this->set('ymd', $ymd);
+            $date0ymd = $data['date0'];
+            $date0 = date('Y-m-d', strtotime(strval($date0ymd['year']) . "-" . strval($date0ymd['month']) . "-" . strval($date0ymd['day'])));
+            $this->set('date0', $date0);
+            $date1ymd = $data['date1'];
+            $date1 = date('Y-m-d', strtotime(strval($date1ymd['year']) . "-" . strval($date1ymd['month']) . "-" . strval($date1ymd['day'])));
+            $this->set('date1', $date1);
+            
+            if($date0ymd['year']!=0 and $date0ymd['month']!=0 and $date0ymd['day']!=0)
+                $cond_array += array('SanmaData.date >=' => $date0);
+            if($date1ymd['year']!=0 and $date1ymd['month']!=0 and $date1ymd['day']!=0)
+                $cond_array += array('SanmaData.date <=' => $date1);
 
             $company = $data['company'];
             $this->set('company', $company);
@@ -50,9 +66,9 @@ class SanmaDataController extends AppController {
             if($person_m!="")
                 $cond_array += array('SanmaData.person_m'=>$person_m);
 
-            $memo = $data['memo'];
-            $this->set('memo', $memo);
-            if($memo!="")
+            $memo_list = explode(" ", $data['memo']);
+            $this->set('memo', $memo_list);
+            foreach($memo_list as $memo) 
                 $cond_array += array('SanmaData.memo LIKE'=>'%'.$memo.'%');
 
             $status = array('conditions'=>array("AND"=>$cond_array));
