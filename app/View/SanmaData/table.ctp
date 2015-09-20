@@ -21,4 +21,6 @@
 <?php endforeach; ?>
 <?php endif; ?>
 </table>
+<input type="button" onclick="location.href='search'" value="検索に戻る" />
+<input type="button" onclick="location.href='index'" value="最初に戻る" />
 

@@ -5,17 +5,20 @@ App::uses('Sanitize', 'Utility');
 class SanmaDataController extends AppController {
 
     public function index() {
+        $this->layout = "bootstrap";
         $datas = $this->SanmaData->find('all');
         $this->set('datas', $datas);
     }
 
     public function add() {
+        $this->layout = "bootstrap";
         if($this->request->is('post')) {
             $this->SanmaData->save($this->request->data);
         }
     }
 
     public function search() {
+        $this->layout = "bootstrap";
         $ymd_opts = array(
             'type'=>'date',
             'dateFormat'=>'YMD',
@@ -26,6 +29,7 @@ class SanmaDataController extends AppController {
     }
 
     public function table() {
+        $this->layout = "bootstrap";
         $this->autoLayout = false;
         if($this->request->data) {
             
